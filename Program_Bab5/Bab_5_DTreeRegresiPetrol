@@ -1,0 +1,105 @@
+
+# coding: utf-8
+
+# In[1]:
+
+
+#Decisition Tree untuk regresi
+import pandas as pd  
+import numpy as np  
+import matplotlib.pyplot as plt  
+get_ipython().run_line_magic('matplotlib', 'inline')
+
+
+# In[2]:
+
+
+dataset = pd.read_csv('petrol_consumption.csv')  
+
+
+# In[4]:
+
+
+dataset.head()  
+
+
+# In[9]:
+
+
+dataset.describe()  
+
+
+# Preparing the Data
+# 
+# Data dipisahkan antara fitur/atribut dengan label dan juga pemisahan atas data latih dan data uji
+# 
+
+# In[8]:
+
+
+X = dataset.drop('Petrol_Consumption', axis=1)  
+y = dataset['Petrol_Consumption']  
+
+
+# In[10]:
+
+
+from sklearn.model_selection import train_test_split  
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)  
+
+
+# 
+# Pada bagian ini kita menggunakan scikit-learn dengan DecisionTreeRegressor
+# 
+# Untuk mencocokkan model gunakan data latih dengan fungsi fit sbb 
+
+# In[12]:
+
+
+from sklearn.tree import DecisionTreeRegressor  
+regressor = DecisionTreeRegressor()  
+regressor.fit(X_train, y_train)  
+
+
+# Untuk membuat prediksi pada data uji, gunakan metode(fungsi) predict
+
+# In[13]:
+
+
+y_pred = regressor.predict(X_test)  
+
+
+# In[14]:
+
+
+#Membandingkan data aktual dan hasil model/dugaan
+
+df=pd.DataFrame({'Data aktual':y_test, 'Dugaan':y_pred})  
+df  
+
+
+#  
+# Perhatikan bahwa dimungkinkan hasil yang diperoleh berbeda karena tergantung pemisahan data latih dan data uji yang dipisahkan secara random
+# 
+# 
+# Untuk mengevaluasi algoritma, maka jarak yang umum digunakan adalah error rerata absolut, error rerata kuadrat,
+#  dan akar dari rerata kuadrat error
+# 
+# Pada Scikit-Learn terdapat fungsi-fungsi untuk dapat menghitung nilai-nila ini untuk kita.
+# 
+# 
+
+# In[18]:
+
+
+from sklearn import metrics  
+print('Mean Absolute Error:', metrics.mean_absolute_error(y_test, y_pred))  
+print('Mean Squared Error:', metrics.mean_squared_error(y_test, y_pred))  
+print('Root Mean Squared Error:', np.sqrt(metrics.mean_squared_error(y_test, y_pred)))  
+
+
+# In[ ]:
+
+
+The mean absolute error for our algorithm is 50.3, 
+
